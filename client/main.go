@@ -4,17 +4,24 @@ import (
 	"bufio"
 	"fmt"
 	"net/http"
+	"sync"
 )
 
 const LOOP = 1
 
 func main() {
+	var wg sync.WaitGroup
+
 	for i := 0; i < LOOP; i++ {
-		go buy()
+		wg.Add(1)
+		go buy(&wg)
 	}
+
+	wg.Wait()
 }
 
-func buy() {
+func buy(wg *sync.WaitGroup) {
+	defer wg.Done()
 	resp, err := http.Get("http://localhost:19810/buy")
 	if err != nil {
 		panic(err)
