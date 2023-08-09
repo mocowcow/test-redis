@@ -6,8 +6,15 @@ import (
 	"net/http"
 )
 
-func main() {
+const LOOP = 1
 
+func main() {
+	for i := 0; i < LOOP; i++ {
+		go buy()
+	}
+}
+
+func buy() {
 	resp, err := http.Get("http://localhost:19810/buy")
 	if err != nil {
 		panic(err)
