@@ -26,7 +26,7 @@ func main() {
 	initGoods()
 
 	r := gin.Default()
-	r.Use(acccessLimitMiddleware)
+	// r.Use(acccessLimitMiddleware)
 
 	r.GET("/buy/:amount", buy)
 	r.Run("localhost:19810")
@@ -46,7 +46,7 @@ func acccessLimitMiddleware(c *gin.Context) {
 		c.JSON(429, gin.H{
 			"result": "too many request",
 		})
-		return
+		c.Abort()
 	}
 }
 

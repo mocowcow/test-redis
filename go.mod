@@ -5,6 +5,12 @@ go 1.20
 require github.com/gin-gonic/gin v1.9.1
 
 require (
+	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/onsi/ginkgo v1.16.5 // indirect
+	github.com/onsi/gomega v1.27.10 // indirect
+)
+
+require (
 	github.com/bytedance/sonic v1.10.0-rc3 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
