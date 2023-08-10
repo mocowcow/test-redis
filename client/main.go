@@ -22,7 +22,7 @@ func main() {
 
 func buy(wg *sync.WaitGroup) {
 	defer wg.Done()
-	resp, err := http.Get("http://localhost:19810/buy")
+	resp, err := http.Get("http://localhost:19810/buy/3")
 	if err != nil {
 		panic(err)
 	}
