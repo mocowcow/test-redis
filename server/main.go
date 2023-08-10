@@ -21,12 +21,18 @@ var RC *redis.Client = redis.NewClient(&redis.Options{
 func main() {
 
 	RC.FlushDB()
+	initGoods()
 
 	r := gin.Default()
 	r.Use(acccessLimitMiddleware)
 
 	r.GET("/buy", buy)
 	r.Run("localhost:19810")
+}
+
+func initGoods() {
+	RC.Set("goodsTotal", "20", 0)
+	RC.Set("goodsSold", "0", 0)
 }
 
 func acccessLimitMiddleware(c *gin.Context) {
