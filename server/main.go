@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func main() {
 	r := gin.Default()
 	r.Use(acccessLimitMiddleware)
 
-	r.GET("/buy", buy)
+	r.GET("/buy/:amount", buy)
 	r.Run("localhost:19810")
 }
 
@@ -49,6 +50,24 @@ func acccessLimitMiddleware(c *gin.Context) {
 }
 
 func buy(c *gin.Context) {
+	// bug version
+	// has race condition
+	amountStr := c.Param("amount")
+	amount, _ := strconv.Atoi(amountStr)
+	totalStr, _ := RC.Get("goodsTotal").Result()
+	total, _ := strconv.Atoi(totalStr)
+	soldStr, _ := RC.Get("goodsSold").Result()
+	sold, _ := strconv.Atoi(soldStr)
+
+	if sold+amount > total {
+		c.JSON(403, gin.H{
+			"result": "insufficient stock",
+		})
+		return
+	}
+
+	RC.IncrBy("goodsSold", int64(amount))
+
 	c.JSON(200, gin.H{
 		"result": "buy item",
 	})
