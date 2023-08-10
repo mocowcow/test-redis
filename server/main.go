@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -69,6 +70,6 @@ func buy(c *gin.Context) {
 	RC.IncrBy("goodsSold", int64(amount))
 
 	c.JSON(200, gin.H{
-		"result": "buy item",
+		"result": fmt.Sprintf("buy %d item", amount),
 	})
 }
