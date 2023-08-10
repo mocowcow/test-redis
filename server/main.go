@@ -26,8 +26,9 @@ func main() {
 	initGoods()
 
 	r := gin.Default()
-	// r.Use(acccessLimitMiddleware)
+	r.Use(acccessLimitMiddleware)
 
+	r.GET("/buyRacing/:amount", buyWithRacing)
 	r.GET("/buy/:amount", buy)
 	r.Run("localhost:19810")
 }
@@ -50,7 +51,7 @@ func acccessLimitMiddleware(c *gin.Context) {
 	}
 }
 
-func buy(c *gin.Context) {
+func buyWithRacing(c *gin.Context) {
 	// bug version
 	// has race condition
 	amountStr := c.Param("amount")
@@ -72,4 +73,8 @@ func buy(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"result": fmt.Sprintf("buy %d item", amount),
 	})
+}
+
+func buy(c *gin.Context) {
+
 }
