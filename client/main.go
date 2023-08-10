@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-const LOOP = 1
+const LOOP = 10
 
 func main() {
 	var wg sync.WaitGroup
