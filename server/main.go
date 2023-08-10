@@ -23,11 +23,13 @@ func main() {
 	RC.FlushDB()
 
 	r := gin.Default()
+	r.Use(acccessLimitMiddleware)
+
 	r.GET("/buy", buy)
 	r.Run("localhost:19810")
 }
 
-func buy(c *gin.Context) {
+func acccessLimitMiddleware(c *gin.Context) {
 	cIP := c.ClientIP()
 	freq, _ := RC.Incr(cIP).Result()
 	RC.Expire(cIP, COOLDOWN*time.Second)
@@ -38,9 +40,10 @@ func buy(c *gin.Context) {
 		})
 		return
 	}
+}
 
+func buy(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"result": "buy item",
-		"freq":   freq,
 	})
 }
