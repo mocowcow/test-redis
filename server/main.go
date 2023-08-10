@@ -2,7 +2,14 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis"
 )
+
+var RC *redis.Client = redis.NewClient(&redis.Options{
+	Addr:     "localhost:6379",
+	Password: "",
+	DB:       0,
+})
 
 func main() {
 	r := gin.Default()
