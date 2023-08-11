@@ -63,7 +63,7 @@ func buyWithRacing(c *gin.Context) {
 	sold, _ := strconv.Atoi(soldStr)
 
 	if sold+amount > total {
-		c.JSON(403, gin.H{
+		c.JSON(400, gin.H{
 			"result": "insufficient stock",
 		})
 		return
@@ -90,7 +90,7 @@ func buy(c *gin.Context) {
 	}
 
 	if res == 0 {
-		c.JSON(403, gin.H{
+		c.JSON(400, gin.H{
 			"result": "insufficient stock",
 		})
 		return
