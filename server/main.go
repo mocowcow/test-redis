@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"test-redis/server/lua"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,7 @@ import (
 )
 
 const (
-	ACCESS_LIMIT = 5
+	ACCESS_LIMIT = 100
 	COOLDOWN     = 2
 )
 
@@ -76,5 +77,26 @@ func buyWithRacing(c *gin.Context) {
 }
 
 func buy(c *gin.Context) {
+	amountStr := c.Param("amount")
+	amount, _ := strconv.Atoi(amountStr)
 
+	res, err := lua.BuyItem.Run(RC, nil, amount).Int()
+
+	if err != nil {
+		c.JSON(403, gin.H{
+			"result": err,
+		})
+		return
+	}
+
+	if res == 0 {
+		c.JSON(403, gin.H{
+			"result": "insufficient stock",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"result": fmt.Sprintf("buy %d item", amount),
+	})
 }
